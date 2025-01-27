@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: -webkit-linear-gradient(
+    top,
+    hsla(210, 70%, 80%, 1) 0%,
+    hsla(210, 50%, 100%, 1) 100%
+  );
+  background-size: cover;
+  overflow: hidden;
+}
+
+.heliContainer {
+  position: absolute;
+  bottom: 250px;
+  left: 50px;
+}
+.helicopter {
+  position: relative;
+  width: 200px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90);
+  }
+  50% {
+    transform: rotate(180);
+  }
+  75% {
+    transform: rotate(270);
+  }
+  100% {
+    transform: rotate(360);
+  }
+}
+.wings {
+  top: 18px;
+  left: 65px;
+  position: relative;
+  width: 150px;
+  height: 35px;
+  display: block;
+  transform-origin: center;
+  animation-name: rotate;
+  animation-duration: 5ms;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+#obstacle-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}

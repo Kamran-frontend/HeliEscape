@@ -1,10 +1,15 @@
 class HelicopterGame {
   constructor() {
     this.HelicopterCon = document.getElementById("heliContainer");
-    this.heliHeight = document.getElementById("heliContainer").offsetHeight;
+    this.heliHeight = this.HelicopterCon.offsetTop;
     this.obstaclesCon = document.getElementById("obstacle-container");
+    this.wings = document.getElementById("wings");
+    this.sound = document.getElementById("sound");
     this.obstacles = [];
-    this.grav = null;
+    this.gravityInterval = null;
+    this.obstacleSpeed = 3;
+    this.gameOver = false;
+    this.rotatingSpeed = 0;
     this.init();
   }
 
@@ -13,67 +18,118 @@ class HelicopterGame {
     this.gravity();
     this.moveWings();
     this.createObstacles();
-    // this.playSound();
+    this.moveObstacles();
+    this.checkCollision();
+    this.playSound();
   }
 
   setupEventListeners() {
-    window.onload = () => this.changeObstacles();
-    window.onkeyup = (e) => this.move(e);
+    window.onkeyup = (e) => this.move();
   }
 
   createObstacles() {
-    for (let i = 0; i <= 5; i++) {
+    for (let i = 0; i < 50; i++) {
       const obs = document.createElement("div");
       obs.className = "obstacle";
-      obs.style.position = "absolute";
-      obs.style.bottom = "0px";
-      obs.style.height = `${Math.floor(Math.random() * (400 - 100))}px`;
-      obs.style.width = "50px";
-      obs.style.backgroundColor = "#0f2b46";
+      obs.style.height = `${Math.floor(Math.random() * 300) + 100}px`;
+      obs.style.left = `${Math.random() * 2000 + 100}px`;
       this.obstacles.push(obs);
       this.obstaclesCon.appendChild(obs);
     }
   }
 
-  changeObstacles() {
-    this.obstacles.forEach((obs) => {
-      obs.style.height = `${Math.floor(Math.random() * (400 - 100) + 100)}px`;
-      obs.style.left = `${Math.floor(Math.random() * 2000) + 400}px`;
-    });
+  moveObstacles() {
+    setInterval(() => {
+      if (this.gameOver) {
+        return;
+      }
+      this.obstacles.forEach((obs) => {
+        let currentLeft = parseInt(obs.style.left, 10);
+        if (currentLeft <= -50) {
+          obs.style.left = `${window.innerWidth + Math.random() * 200}px`;
+          obs.style.height = `${Math.floor(Math.random() * 300) + 100}px`;
+        } else {
+          obs.style.left = `${currentLeft - this.obstacleSpeed}px`;
+        }
+      });
+    }, 30);
   }
 
   gravity() {
-    this.grav = setInterval(() => {
+    this.gravityInterval = setInterval(() => {
+      if (this.gameOver) {
+        return;
+      }
       if (this.heliHeight > 0) {
         this.heliHeight -= 5;
         this.HelicopterCon.style.bottom = `${this.heliHeight}px`;
       }
-    }, 10);
+    }, 30);
   }
 
   move() {
-    const getUp = setInterval(() => {
+    if (this.gameOver) {
+      return;
+    }
+    const upInterval = setInterval(() => {
       if (this.heliHeight < document.body.offsetHeight - 100) {
         this.heliHeight += 5;
         this.HelicopterCon.style.bottom = `${this.heliHeight}px`;
-        setTimeout(() => clearInterval(getUp), 250);
       }
     }, 10);
+    setTimeout(() => clearInterval(upInterval), 250);
   }
+
+  checkCollision() {
+    setInterval(() => {
+      if (this.gameOver) {
+        return;
+      }
+
+      let heliBody = this.HelicopterCon.getBoundingClientRect();
+
+      this.obstacles.forEach((obs) => {
+        let obsBody = obs.getBoundingClientRect();
+
+        if (
+          heliBody.left < obsBody.right &&
+          heliBody.right - 5 > obsBody.left &&
+          heliBody.top < obsBody.bottom &&
+          heliBody.bottom > obsBody.top
+        ) {
+          this.endGame();
+        }
+      });
+
+      if (
+        this.heliHeight <= 0 ||
+        this.heliHeight >= document.body.offsetHeight - 110
+      ) {
+        this.endGame();
+      }
+    }, 30);
+  }
+
+  endGame() {
+    this.gameOver = true;
+    clearInterval(this.gravityInterval);
+    this.wings.style.animationPlayState = "paused";
+    this.sound.pause();
+    console.log("Game Over!! Please refresh for new game!");
+  }
+
   moveWings() {
-    setInterval(function () {
-      let rotatingSpeed = 0;
-      rotatingSpeed = rotatingSpeed + 100;
-      document.getElementById("wings").style.transform =
-        "rotatey(" + rotatingSpeed + "deg)";
+    this.wingRotationInterval = setInterval(() => {
+      if (this.gameOver) {
+        return;
+      }
+      this.rotatingSpeed += 360;
+      this.wings.style.transform = "rotateY(" + this.rotatingSpeed + "deg)";
     }, 50);
   }
   playSound() {
-    var ourAudio = document.createElement("audio");
-    ourAudio.style.display = "none";
-    ourAudio.src = "./sounds/helicopter.mp3";
-    ourAudio.autoplay = true;
-    document.body.appendChild(ourAudio);
+    this.sound.style.display = "none";
+    this.sound.play();
   }
 }
 

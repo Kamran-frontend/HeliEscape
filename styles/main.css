@@ -1,4 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap");
+
 body {
+  font-family: "Inconsolata", monospace;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -6,21 +9,30 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+button {
+  font-size: 20px;
+  border-radius: 5px;
+  font-family: "Inconsolata", monospace;
+}
+h2 {
+  font-size: 35px;
+}
+.title-img {
+  width: 35px;
+  transform: rotate(20deg);
+}
 
 #game-container {
   width: 100vw;
   height: 100vh;
-  background: -webkit-linear-gradient(
-    top,
-    hsla(210, 70%, 80%, 1) 0%,
-    hsla(210, 50%, 100%, 1) 100%
-  );
+  background: #076585;
+  background: linear-gradient(to bottom, #076585, #fff);
   overflow: hidden;
 }
 
 .heliContainer {
   position: absolute;
-  bottom: 250px;
+  bottom: 50%;
   left: 50px;
 }
 .helicopter {
@@ -60,7 +72,54 @@ body {
 }
 .obstacle {
   position: absolute;
-  bottom: 0;
   width: 50px;
-  background-color: #242b34;
+  background: repeating-linear-gradient(
+      45deg,
+      #242b34 0px,
+      #242b34 4px,
+      #1a1f26 5px,
+      #1a1f26 9px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      #2e3b46 0px,
+      #2e3b46 4px,
+      #1a1f26 5px,
+      #1a1f26 9px
+    );
+  background-size: 10px 10px;
+  border: 2px solid #1a1f26;
+}
+
+#score {
+  position: relative;
+  z-index: 1;
+  font-size: 30px;
+  width: 140px;
+  margin: 10px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 5px;
+}
+
+.popup {
+  position: fixed;
+  width: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.popup button {
+  margin-top: 10px;
+  padding: 10px;
+  background: #ffcc00;
+  border: none;
+  cursor: pointer;
 }

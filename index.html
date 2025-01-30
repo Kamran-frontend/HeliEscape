@@ -24,8 +24,25 @@
         <img class="wings" id="wings" src="./images/wings.png" />
         <img class="helicopter" id="helicopter" src="./images/helicopter.png" />
       </div>
+      <div id="score">Score: 0</div>
       <audio id="sound" src="./sounds/helicopter.mp3" loop="true"></audio>
+      <audio id="gameOver" src="./sounds/game-over.mp3"></audio>
+      <audio id="collectPoints" src="./sounds/collect-point.mp3"></audio>
       <div id="obstacle-container"></div>
+
+      <div id="start-popup" class="popup">
+        <h2>
+          <img class="title-img" src="./images/favicon/favicon-96x96.png" />
+          HeliEscape
+        </h2>
+        <p>Use any key or mouse click to keep up the helicopter!</p>
+        <button id="start-button">Start Game</button>
+      </div>
+
+      <div id="game-over-popup" class="popup" style="display: none">
+        <h2>Game Over</h2>
+        <button id="restart-button">Restart Game</button>
+      </div>
     </div>
     <script src="./scripts/script.js"></script>
   </body>

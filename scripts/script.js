@@ -16,6 +16,7 @@ class HelicopterGame {
     this.obstacles = [];
     this.gravityInterval = null;
     this.obstacleInterval = null;
+    this.moveObstacleInterval = null;
     this.gameOver = false;
     this.rotatingSpeed = 0;
     this.obstacleSpeed = 3;
@@ -47,6 +48,7 @@ class HelicopterGame {
     this.gameOverPopup.style.display = "none";
     clearInterval(this.gravityInterval);
     clearInterval(this.obstacleInterval);
+    clearInterval(this.moveObstacleInterval);
 
     this.obstacles.forEach((obs) => obs.remove());
     this.obstacles = [];
@@ -137,7 +139,7 @@ class HelicopterGame {
 
   moveObstacles() {
     // moving obstacles to left on every 5ms
-    setInterval(() => {
+    this.moveObstacleInterval = setInterval(() => {
       if (this.gameOver) return;
 
       // running loop for obstacles array
@@ -201,6 +203,7 @@ class HelicopterGame {
     this.gameOver = true;
     clearInterval(this.gravityInterval);
     clearInterval(this.obstacleInterval);
+    clearInterval(this.moveObstacleInterval);
     this.wings.style.animationPlayState = "paused";
     this.gameOverPopup.style.display = "block";
     this.sound.pause();

@@ -12,6 +12,7 @@ class HelicopterGame {
     this.restartButton = document.getElementById("restart-button");
     this.scoreDisplay = document.getElementById("score");
     this.collectPointsSound = document.getElementById("collectPoints");
+    this.finalScore = document.getElementById("final-score");
 
     this.obstacles = [];
     this.gravityInterval = null;
@@ -34,6 +35,9 @@ class HelicopterGame {
     this.restartButton.addEventListener("click", () => this.restartGame());
     window.onkeyup = () => this.moveHelicopter();
     window.onclick = () => this.moveHelicopter();
+
+    // added for mobile touch
+    window.addEventListener("touchstart", () => this.moveHelicopter());
   }
 
   startGame() {
@@ -103,7 +107,7 @@ class HelicopterGame {
 
       // creating obstacles every 3 seconds
       this.createSingleObstacle();
-    }, 3000);
+    }, 2000);
   }
 
   createSingleObstacle() {
@@ -152,7 +156,8 @@ class HelicopterGame {
         if (currentLeft <= -50) {
           topObstacles.remove();
           bottomObstacles.remove();
-          this.obstacles.splice(i, 2);
+          this.obstacles.shift();
+          this.obstacles.shift();
 
           // Score increment and method call for the DOM update
           this.score++;
@@ -163,7 +168,7 @@ class HelicopterGame {
           bottomObstacles.style.left = `${currentLeft - this.obstacleSpeed}px`;
         }
       }
-    }, 5);
+    }, 1);
   }
 
   checkCollision() {
@@ -208,8 +213,10 @@ class HelicopterGame {
     this.gameOverPopup.style.display = "block";
     this.sound.pause();
     this.gameOverSound.play();
-    this.score = 0;
     this.updateScoreDisplay();
+
+    // display final score
+    this.finalScore.innerText = `Final Score: ${this.score}`;
   }
 
   moveWings() {

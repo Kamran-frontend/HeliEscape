@@ -20,8 +20,8 @@ class HelicopterGame {
     this.moveObstacleInterval = null;
     this.gameOver = false;
     this.rotatingSpeed = 0;
-    this.obstacleSpeed = 3;
-    this.minGap = 320;
+    this.obstacleSpeed = 4;
+    this.minGap = 300;
     this.maxGap = 450;
     this.score = 0;
     this.gameStarted = false;
@@ -57,7 +57,10 @@ class HelicopterGame {
     this.obstacles.forEach((obs) => obs.remove());
     this.obstacles = [];
 
-    this.HelicopterCon.style.bottom = `50%`;
+    // Resetting the helicopter position
+    this.heliHeight = window.innerHeight / 2;
+    this.HelicopterCon.style.bottom = `${this.heliHeight}px`;
+
     this.gameOver = false;
     this.rotatingSpeed = 0;
     this.score = 0;
@@ -105,7 +108,7 @@ class HelicopterGame {
     this.obstacleInterval = setInterval(() => {
       if (this.gameOver) return;
 
-      // creating obstacles every 3 seconds
+      // creating obstacles every 2 seconds
       this.createSingleObstacle();
     }, 2000);
   }
